@@ -1,0 +1,15 @@
+--------- beginning of main
+11-15 04:52:48.978 I/CHABAK_SPIKE( 9660): SDK 2.3.2 / server http://10.0.2.2:3000/v1
+11-15 04:52:48.998 I/CHABAK_SPIKE( 9660): server: already enrolled vehicleId=d1348574-76e8-4d70-8194-232f9c30219f
+11-15 04:52:49.029 I/CHABAK_SPIKE( 9660): vehicle.initialize() called
+11-15 04:52:51.988 I/CHABAK_SPIKE( 9660): ✔ capability SOC access=READ (전역 속성 — area 없음)
+11-15 04:52:52.002 I/CHABAK_SPIKE( 9660): registered SOC listener — Virtual Console 에서 SOC 값을 바꿔 보세요
+11-15 04:52:52.056 I/CHABAK_SPIKE( 9660): ✔ SOC(callback) = 100 %
+11-15 04:52:52.064 I/CHABAK_SPIKE( 9660): capability-report → 201 {"revision":4}
+11-15 04:52:52.112 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 202 {"accepted":1,"duplicates":0,"lastSeq":1}
+11-15 04:53:01.436 I/CHABAK_SPIKE( 9660): SOC(get) = 100 % (재확인)
+11-15 04:53:01.909 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 202 {"accepted":1,"duplicates":0,"lastSeq":2}
+11-15 04:53:11.462 I/CHABAK_SPIKE( 9660): SOC(get) = 100 % (재확인)
+11-15 04:53:11.551 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 202 {"accepted":1,"duplicates":0,"lastSeq":3}
+11-15 04:53:21.468 I/CHABAK_SPIKE( 9660): SOC(get) = 100 % (재확인)
+11-15 04:53:22.035 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 202 {"accepted":1,"duplicates":0,"lastSeq":4}

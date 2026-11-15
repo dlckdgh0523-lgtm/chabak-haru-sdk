@@ -1,0 +1,28 @@
+{
+  "vehicleId": "d1348574-76e8-4d70-8194-232f9c30219f",
+  "revision": 17,
+  "connection": "ONLINE",
+  "lastSeenAt": "2026-11-15T12:53:42.397Z",
+  "executionMode": "PLEOS_EMULATOR",
+  "powerState": "PARKED",
+  "metrics": {
+    "evSocPct": {
+      "seq": 6,
+      "unit": "%",
+      "value": 100,
+      "bootId": "7c5677ce-f9eb-4ffa-8562-cc900c7719ea",
+      "source": "PLEOS",
+      "quality": "STALE",
+      "observedAt": "2026-11-15T12:53:41.912Z",
+      "receivedAt": "2026-11-15T12:53:42.407Z",
+      "sourceDeviceId": "a798182a-d332-4af0-a760-ca3091b839d9"
+    }
+  },
+  "derived": {
+    "effectiveVentilation": "UNKNOWN",
+    "ventilationObserved": {
+      "recirculation": null,
+      "fan": null
+    }
+  }
+}

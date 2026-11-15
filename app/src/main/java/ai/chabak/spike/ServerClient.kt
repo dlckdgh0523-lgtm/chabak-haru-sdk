@@ -9,6 +9,7 @@ import java.net.URL
 import java.time.Instant
 import java.util.UUID
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 /**
  * chabak-server 와의 최소 계약. 의존성 없이 HttpURLConnection 만 쓴다.
@@ -16,7 +17,7 @@ import java.util.concurrent.Executors
  */
 class ServerClient(ctx: Context) {
     private val prefs = ctx.getSharedPreferences("chabak", Context.MODE_PRIVATE)
-    private val io = Executors.newSingleThreadExecutor()
+    private val io = Executors.newSingleThreadScheduledExecutor()
     private val bootId = UUID.randomUUID().toString()
     private var seq = 0
 
@@ -59,13 +60,28 @@ class ServerClient(ctx: Context) {
         Log.i(TAG, "capability-report → ${r.first} ${r.second}")
     }
 
+    // F2: 전송 실패 시 metric 별 최신값만 남겨 두고 백오프(1→2→4…최대 30초)로 다시 보낸다. 쌓아 두지 않는다.
+    private val pending = LinkedHashMap<String, JSONObject>() // io 스레드에서만 접근
+    private var retryMs = 0L
+    private var retryScheduled = false
+
     /** value=null 이면 결측으로 보낸다. 0 으로 채우지 않는다. */
     fun telemetry(metric: String, value: Any?, unit: String) = io.execute {
-        val v = vehicleId ?: return@execute
-        val s = JSONObject().put("metric", metric).put("value", value ?: JSONObject.NULL).put("unit", unit)
+        pending[metric] = JSONObject().put("metric", metric).put("value", value ?: JSONObject.NULL).put("unit", unit)
             .put("source", "PLEOS").put("observedAt", Instant.now().toString()).put("seq", ++seq).put("bootId", bootId)
-        val r = post("/vehicles/$v/telemetry-batches", deviceToken, JSONObject().put("samples", JSONArray().put(s)))
-        Log.i(TAG, "telemetry $metric=$value → ${r.first} ${r.second}")
+        if (!retryScheduled) flush() // 재시도 대기 중이면 최신값만 바꿔 두고 그때 같이 보낸다
+    }
+
+    private fun flush() {
+        val v = vehicleId ?: return
+        if (pending.isEmpty()) return
+        val r = post("/vehicles/$v/telemetry-batches", deviceToken, JSONObject().put("samples", JSONArray(pending.values)))
+        Log.i(TAG, "telemetry ${pending.keys} → ${r.first} ${r.second}")
+        if (r.first == 0 || r.first >= 500) { // 네트워크·서버 오류만 재시도. 4xx 는 값이 잘못된 것이라 버린다
+            retryMs = (retryMs * 2).coerceIn(1000, 30_000)
+            retryScheduled = true
+            io.schedule({ retryScheduled = false; flush() }, retryMs, TimeUnit.MILLISECONDS)
+        } else { pending.clear(); retryMs = 0 }
     }
 
     private fun post(path: String, token: String?, body: JSONObject): Pair<Int, JSONObject> = try {

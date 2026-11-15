@@ -7,6 +7,8 @@ package ai.chabak.spike
  * 못 읽으면 null — 절대 "미지원"으로 단정하지 않는다.
  */
 object VehicleErrors {
+    const val NO_ACCESS = "NO_VEHICLE_ACCESS"
+
     fun codeOf(e: Exception): String? = runCatching {
         val m = e.javaClass.methods.firstOrNull { it.parameterCount == 0 && (it.name == "getErrorCode" || it.returnType.simpleName == "ErrorCode") } ?: return null
         m.invoke(e)?.toString()
@@ -18,7 +20,7 @@ object VehicleErrors {
         "ERROR_SERVICE_CONNECTION_FAILURE", "ERROR_INTERNAL_SERVICE" -> "SERVICE_DOWN"
         "ERROR_EMPTY_RESULT" -> "NO_VALUE"
         "ERROR_DRIVING_RESTRICTED" -> "DRIVING_RESTRICTED"
-        null -> "UNKNOWN_EXCEPTION(${e.javaClass.simpleName}: ${e.message})"
+        null -> if (e is SecurityException) NO_ACCESS else "UNKNOWN_EXCEPTION(${e.javaClass.simpleName}: ${e.message})"
         else -> "OTHER(${codeOf(e)})"
     }
 }

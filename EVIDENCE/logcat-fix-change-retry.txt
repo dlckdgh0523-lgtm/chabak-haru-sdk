@@ -1,0 +1,19 @@
+--------- beginning of main
+11-15 04:54:31.657 I/CHABAK_SPIKE( 9660): ✔ SOC(callback) = 55 %
+11-15 04:54:31.698 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 202 {"accepted":1,"duplicates":0,"lastSeq":8}
+11-15 04:54:38.252 W/CHABAK_SPIKE( 9660): POST /vehicles/d1348574-76e8-4d70-8194-232f9c30219f/heartbeats failed: java.net.ConnectException: Failed to connect to /10.0.2.2:3000
+11-15 04:54:38.258 I/CHABAK_SPIKE( 9660): SOC(get) = 55 % (재확인)
+11-15 04:54:38.262 W/CHABAK_SPIKE( 9660): POST /vehicles/d1348574-76e8-4d70-8194-232f9c30219f/telemetry-batches failed: java.net.ConnectException: Failed to connect to /10.0.2.2:3000
+11-15 04:54:38.262 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 0 {"error":"java.net.ConnectException: Failed to connect to \/10.0.2.2:3000"}
+11-15 04:54:39.267 W/CHABAK_SPIKE( 9660): POST /vehicles/d1348574-76e8-4d70-8194-232f9c30219f/telemetry-batches failed: java.net.ConnectException: Failed to connect to /10.0.2.2:3000
+11-15 04:54:39.267 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 0 {"error":"java.net.ConnectException: Failed to connect to \/10.0.2.2:3000"}
+11-15 04:54:41.272 W/CHABAK_SPIKE( 9660): POST /vehicles/d1348574-76e8-4d70-8194-232f9c30219f/telemetry-batches failed: java.net.ConnectException: Failed to connect to /10.0.2.2:3000
+11-15 04:54:41.272 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 0 {"error":"java.net.ConnectException: Failed to connect to \/10.0.2.2:3000"}
+11-15 04:54:45.277 W/CHABAK_SPIKE( 9660): POST /vehicles/d1348574-76e8-4d70-8194-232f9c30219f/telemetry-batches failed: java.net.ConnectException: Failed to connect to /10.0.2.2:3000
+11-15 04:54:45.278 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 0 {"error":"java.net.ConnectException: Failed to connect to \/10.0.2.2:3000"}
+11-15 04:54:48.261 I/CHABAK_SPIKE( 9660): SOC(get) = 55 % (재확인)
+11-15 04:54:53.335 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 202 {"accepted":1,"duplicates":0,"lastSeq":10}
+11-15 04:54:58.276 I/CHABAK_SPIKE( 9660): SOC(get) = 55 % (재확인)
+11-15 04:54:58.303 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 202 {"accepted":1,"duplicates":0,"lastSeq":11}
+11-15 04:55:08.388 I/CHABAK_SPIKE( 9660): SOC(get) = 55 % (재확인)
+11-15 04:55:08.496 I/CHABAK_SPIKE( 9660): telemetry [evSocPct] → 202 {"accepted":1,"duplicates":0,"lastSeq":12}
