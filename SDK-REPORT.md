@@ -57,7 +57,7 @@ curl -X POST 'http://localhost:18088/browser/session?client=qa&closing=1'  # 끝
 
 | ID | 문제 | 수정 |
 |---|---|---|
-| F3 | heartbeat를 시작할 때 한 번만 보내서 30초 뒤 서버가 OFFLINE으로 보고 preflight가 막힘. 값이 안 바뀌면 SOC도 15초 뒤 STALE | 10초마다 heartbeat + SOC 다시 읽기(메인 Handler), `onDestroy`에서 정지. **한계**: 앱이 뒤로 가면 Android 14가 프로세스를 얼려(`isFrozen=true` 확인) 멈춥니다. 수면 중 CID는 앱이 앞에 있어 시연에는 충분하고, 백그라운드 유지는 포그라운드 서비스가 필요합니다 |
+| F3 | heartbeat를 시작할 때 한 번만 보내서 30초 뒤 서버가 OFFLINE으로 보고 preflight가 막힘. 값이 안 바뀌면 SOC도 15초 뒤 STALE | 10초마다 heartbeat + SOC 다시 읽기(메인 Handler), `onDestroy`에서 정지. **한계**: 앱이 뒤로 가면 Android 14가 프로세스를 얼려(`isFrozen=true`, 내비 앱을 앞으로 띄워 확인) 멈춥니다. 이 런처는 HOME 키로는 앱이 화면에 남아 동결되지 않습니다. 수면 중 CID는 앱이 앞에 있어 시연에는 충분하고, 백그라운드 유지는 포그라운드 서비스가 필요합니다 |
 | F2 | 서버 전송이 실패하면 값을 버림 | metric별 **최신값만** 남기고 1→2→4…최대 30초 백오프로 재전송(쌓아 두지 않음). 네트워크·5xx만 재시도, 4xx는 버림 |
 | F1 | 차량 서비스 없는 기기에서 기술 오류 원문만 표시 | `SecurityException`(ErrorCode 없음)을 따로 분류해 "이 기기에는 차량 서비스가 없어요" 안내 |
 | F4 | 등록 직후 같은 값이 2~3번 와서 telemetry 중복 | 같은 값이 5초 안에 연달아 오면 1번만 전송(10초 주기 재읽기는 통과해 STALE 방지) |
@@ -67,8 +67,9 @@ curl -X POST 'http://localhost:18088/browser/session?client=qa&closing=1'  # 끝
 - F3: 앱이 앞에 있는 동안 10초 간격 전송 확인(seq 1→6). 뒤로 보내면 멈춤(위 한계)
 - 콜백: 웹 API로 SOC 55 → `✔ SOC(callback) = 55 %` → 202
 - F2: 비행기 모드 동안 1→2→4초 재시도, 그 사이 새 값(seq 10)이 이전 값을 대체, 네트워크 복구 후 202(lastSeq 10). 이후 10초 주기 정상 → `EVIDENCE/logcat-fix-change-retry.txt`
-- F1: 빌드만 확인. 폰 에뮬레이터에서의 화면 확인은 QA 재확인 대상
-- 정리: 콘솔 SOC를 100으로 되돌리는 요청이 503(비행기 모드 뒤 콘솔 세션 비활성)으로 실패해 **콘솔 SOC가 55로 남았을 수 있음**. 세션은 닫았고 에뮬레이터는 종료
+- F1: 폰 에뮬레이터 화면에 "이 기기에는 차량 서비스가 없어요" 표시, 크래시 없음 (QA 재확인)
+- QA 재확인(2ba0bce): F1~F4 모두 해결. F2 백오프 1→2→4→8→16초 후 복구 시 최신값만 202, F3 40초 넘게 ONLINE/VALID 유지, F4 시작 시 1회
+- 콘솔 503 원인: 새로 부팅한 직후 콘솔 세션이 `active:false`로 열려 PUT이 503이 됨. `adb reboot` 후 정상(비행기 모드는 원인 아님). SOC는 QA가 100으로 되돌림
 
 ## 메인 앱(`chabak-haru/android`)에 붙이는 방안
 
