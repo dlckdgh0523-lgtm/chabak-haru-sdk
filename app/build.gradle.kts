@@ -17,6 +17,8 @@ android {
         buildConfigField("String", "SERVER_BASE", "\"http://10.0.2.2:3000/v1\"")
         buildConfigField("String", "ENROLL_SECRET", "\"change-me-enroll-secret\"")
     }
+    // 이 AVD 에 서명이 다른 ai.chabak.spike(11/10 설치, 출처 불명)가 있어 덮어쓰지 않고 별도 id 로 설치한다
+    buildTypes { getByName("debug") { applicationIdSuffix = ".v232" } }
     buildFeatures { buildConfig = true }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     kotlinOptions { jvmTarget = "17" }

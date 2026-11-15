@@ -14,21 +14,19 @@
 2. `chabak-server` 가 호스트에서 `:3000` 으로 떠 있음 (`npm run build && npm start`). AVD 에서는 `10.0.2.2:3000` 으로 보임.
 3. 이 폴더를 Android Studio 로 열고 Gradle sync. Pleos nexus 저장소에서 `ai.pleos.playground:Vehicle:2.3.2` 가 받아져야 함 — 안 받아지면 SDK 신청 상태/네트워크 문제이고 그 뒤는 볼 필요 없음.
 
-## 빌드 전에 반드시 할 것 — 시그니처 2개 확인
+## 시그니처 (확정)
 
-문서 본문이 JS 렌더링이라 두 가지를 공식 문서에서 확정하지 못했습니다. **Android Studio 에서 Ctrl+클릭으로 30초면 끝납니다.**
+`Vehicle-2.3.2.aar` 를 javap 로 확인해 코드에 반영했습니다. 자세한 표는 `SDK-REPORT.md`.
+- `getEvBatteryStateOfCharge(onComplete: (Int?) -> Unit, onFailed)` — area 인자 없음, 값은 정수 %
+- `EvBatteryStateOfChargeListener.onEvBatteryStateOfChargeUpdated(Int?)` + `onFailed(Exception)`
+- capability 콜백은 `(CapabilityConfig)` 하나 (area 맵 없음)
 
-| 확인할 것 | 어디서 | 코드에서 고칠 곳 |
-|---|---|---|
-| `getEvBatteryStateOfCharge` 가 `area` 인자를 받는가 | `MainActivity.readSoc()` 의 호출에 Ctrl+클릭 | 받으면 변형 A 삭제, 변형 B 활성화 |
-| SOC 리스너 인터페이스·메서드 이름 (`EvBatteryStateOfChargeListener.onStateOfChargeUpdated`?) | `ai.pleos.playground.vehicle.listener` 패키지 열어 보기 | `subscribeSoc()` 의 object 선언 |
-
-Door 는 `DoorPositionListener.onPositionUpdated(pos: Int?)` 패턴이 공식 샘플에 있으니 EvBattery 도 같은 패턴일 가능성이 높지만, **추정입니다.** 컴파일 에러가 나면 그 자리입니다.
+빌드: `JAVA_HOME=<Android Studio JBR> ./gradlew :app:assembleDebug` (Gradle 9.2.1, AGP 8.13.2, Kotlin 2.2.21). debug 패키지는 `ai.chabak.spike.v232`.
 
 ## 실행·판독
 
 ```bash
-adb logcat -s CHABAK_SPIKE
+adb -s emulator-5554 logcat -s CHABAK_SPIKE
 ```
 
 | 로그 | 의미 | 다음 행동 |
