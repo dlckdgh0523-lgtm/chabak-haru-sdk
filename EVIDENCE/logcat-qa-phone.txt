@@ -1,0 +1,6 @@
+--------- beginning of main
+11-15 21:46:21.330  2304  2304 I CHABAK_SPIKE: SDK 2.3.2 / server http://10.0.2.2:3000/v1
+11-15 21:46:21.363  2304  2408 I CHABAK_SPIKE: server: already enrolled vehicleId=fbc20e5a-f5d7-4db1-bde6-735c9bf65688
+11-15 21:46:21.721  2304  2304 I CHABAK_SPIKE: vehicle.initialize() called
+11-15 21:46:23.077  2304  2304 I CHABAK_SPIKE: ✘ capability SOC failed: UNKNOWN_EXCEPTION(SecurityException: checkEvBatteryStateOfChargeCapabilities need Permission)
+11-15 21:46:23.154  2304  2408 I CHABAK_SPIKE: capability-report → 201 {"revision":2}

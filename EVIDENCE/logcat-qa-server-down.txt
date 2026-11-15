@@ -1,0 +1,18 @@
+--------- beginning of main
+11-15 04:43:42.265 19473 19473 I CHABAK_SPIKE: SDK 2.3.2 / server http://10.0.2.2:3000/v1
+11-15 04:43:42.283 19473 19569 I CHABAK_SPIKE: server: already enrolled vehicleId=d1348574-76e8-4d70-8194-232f9c30219f
+11-15 04:43:42.341 19473 19569 W CHABAK_SPIKE: POST /vehicles/d1348574-76e8-4d70-8194-232f9c30219f/heartbeats failed: java.net.ConnectException: Failed to connect to /10.0.2.2:3000
+11-15 04:43:42.396 19473 19473 I CHABAK_SPIKE: vehicle.initialize() called
+11-15 04:43:45.925 19473 19809 I CHABAK_SPIKE: ✔ capability SOC access=READ (전역 속성 — area 없음)
+11-15 04:43:45.983 19473 19809 I CHABAK_SPIKE: registered SOC listener — Virtual Console 에서 SOC 값을 바꿔 보세요
+11-15 04:43:46.048 19473 19508 I CHABAK_SPIKE: ✔ SOC(callback) = 55 %
+11-15 04:43:46.051 19473 19569 W CHABAK_SPIKE: POST /vehicles/d1348574-76e8-4d70-8194-232f9c30219f/capability-reports failed: java.net.ConnectException: Failed to connect to /10.0.2.2:3000
+11-15 04:43:46.052 19473 19569 I CHABAK_SPIKE: capability-report → 0 {"error":"java.net.ConnectException: Failed to connect to \/10.0.2.2:3000"}
+11-15 04:43:46.055 19473 19508 I CHABAK_SPIKE: ✔ SOC(get) = 55 %
+11-15 04:43:46.061 19473 19569 W CHABAK_SPIKE: POST /vehicles/d1348574-76e8-4d70-8194-232f9c30219f/telemetry-batches failed: java.net.ConnectException: Failed to connect to /10.0.2.2:3000
+11-15 04:43:46.062 19473 19569 I CHABAK_SPIKE: telemetry evSocPct=55 → 0 {"error":"java.net.ConnectException: Failed to connect to \/10.0.2.2:3000"}
+11-15 04:43:46.063 19473 19508 I CHABAK_SPIKE: ✔ SOC(callback) = 55 %
+11-15 04:43:46.069 19473 19569 W CHABAK_SPIKE: POST /vehicles/d1348574-76e8-4d70-8194-232f9c30219f/telemetry-batches failed: java.net.ConnectException: Failed to connect to /10.0.2.2:3000
+11-15 04:43:46.069 19473 19569 I CHABAK_SPIKE: telemetry evSocPct=55 → 0 {"error":"java.net.ConnectException: Failed to connect to \/10.0.2.2:3000"}
+11-15 04:43:46.080 19473 19569 W CHABAK_SPIKE: POST /vehicles/d1348574-76e8-4d70-8194-232f9c30219f/telemetry-batches failed: java.net.ConnectException: Failed to connect to /10.0.2.2:3000
+11-15 04:43:46.080 19473 19569 I CHABAK_SPIKE: telemetry evSocPct=55 → 0 {"error":"java.net.ConnectException: Failed to connect to \/10.0.2.2:3000"}

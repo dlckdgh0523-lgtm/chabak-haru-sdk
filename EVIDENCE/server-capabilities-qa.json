@@ -1,0 +1,1 @@
+{"revision":1,"sdkVersion":"2.3.2","serviceVersion":null,"emulatorVersion":"2.1.0","permissions":["pleos.car.permission.CAR_ENERGY","pleos.car.permission.CAR_DOORS","pleos.car.permission.CAR_INFO"],"features":[{"areas":[],"feature":"ev.soc","supported":true,"readAllowed":true,"writeAllowed":false}],"observedAt":"2026-11-15T12:38:16.223Z"}
