@@ -5,7 +5,8 @@ plugins {
 
 android {
     namespace = "ai.chabak.spike"
-    compileSdk = 35
+    compileSdkVersion("android-37.0") // 이 PC 에 설치된 플랫폼 (dl.google.com 다운로드 실패)
+    buildToolsVersion = "36.0.0"
     defaultConfig {
         applicationId = "ai.chabak.spike"
         minSdk = 28            // 공식 getting-started: API 28 이상

@@ -23,11 +23,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var out: TextView
     private val lines = StringBuilder()
 
-    // ────────────────────────────────────────────────────────────────
-    // ⚠ 미확인 시그니처: EvBattery SOC 가 area 인자를 받는지 문서 본문에서 확인 못 함.
-    //   Android Studio 에서 getEvBatteryStateOfCharge 에 Ctrl+클릭 → 파라미터 확인 후
-    //   아래 SOC_HAS_AREA 와 readSoc()/subscribeSoc() 의 주석 처리된 변형 중 맞는 쪽을 살린다.
-    // ────────────────────────────────────────────────────────────────
+    // 시그니처는 Vehicle-2.3.2.aar 의 classes.jar 를 javap 로 확인했다 (SDK-REPORT.md):
+    //   checkEvBatteryStateOfChargeCapabilities(onComplete: (CapabilityConfig) -> Unit, onFailed)  — area 맵 없음
+    //   getEvBatteryStateOfCharge(onComplete: (Int?) -> Unit, onFailed)                          — area 인자 없음, 값은 정수 %
+    //   EvBatteryStateOfChargeListener.onEvBatteryStateOfChargeUpdated(Int?) + onFailed(Exception)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,12 +48,10 @@ class MainActivity : AppCompatActivity() {
     private fun checkSocCapability() {
         val ev = vehicle.getEvBattery()
         ev.checkEvBatteryStateOfChargeCapabilities(
-            onComplete = { config, areaMap ->
+            onComplete = { config ->
                 val access = config.accessType.toString()
-                val bounds = areaMap.values.firstOrNull()
-                val areas = areaMap.keys.map { it.toString() }
-                log("✔ capability SOC access=$access areas=$areas range=${bounds?.minValue}..${bounds?.maxValue}")
-                server.reportCapability("ev.soc", access, bounds?.minValue, bounds?.maxValue, areas, null)
+                log("✔ capability SOC access=$access (전역 속성 — area 없음)")
+                server.reportCapability("ev.soc", access, null, null, emptyList(), null)
                 if (access == "READ" || access == "READ_WRITE") { readSoc(); subscribeSoc() }
                 else log("✘ SOC 읽기 권한 없음 (accessType=$access) — 읽기 생략")
             },
@@ -71,26 +68,17 @@ class MainActivity : AppCompatActivity() {
     /** (2) 단발 읽기 */
     private fun readSoc() {
         val ev = vehicle.getEvBattery()
-        // 변형 A: area 없음 (전역 속성일 때)
         ev.getEvBatteryStateOfCharge(
             onComplete = { soc -> onSoc("get", soc) },
             onFailed = { e -> log("✘ get SOC failed: ${VehicleErrors.classify(e)}") },
         )
-        // 변형 B: area 있음 — 시그니처가 (area, onComplete, onFailed) 이면 위를 지우고 이걸 살린다.
-        // ev.getEvBatteryStateOfCharge(
-        //     area = <areaMap.keys.first() 로 받은 Area>,
-        //     onComplete = { soc -> onSoc("get", soc) },
-        //     onFailed = { e -> log("✘ get SOC failed: ${VehicleErrors.classify(e)}") },
-        // )
     }
 
     /** (3) 변경 콜백 — Virtual Console 에서 SOC 를 바꿔서 확인 */
     private fun subscribeSoc() {
         val ev = vehicle.getEvBattery()
-        // 리스너 인터페이스 이름은 Door 패턴(DoorPositionListener.onPositionUpdated)에 준해 추정.
-        // 정확한 메서드명은 ai.pleos.playground.vehicle.listener.EvBatteryStateOfChargeListener 를 Ctrl+클릭.
         val listener = object : ai.pleos.playground.vehicle.listener.EvBatteryStateOfChargeListener {
-            override fun onStateOfChargeUpdated(soc: Float?) = onSoc("callback", soc)
+            override fun onEvBatteryStateOfChargeUpdated(soc: Int?) = onSoc("callback", soc)
             override fun onFailed(exception: Exception) { log("✘ SOC listener failed: ${VehicleErrors.classify(exception)}") }
         }
         ev.registerEvBatteryStateOfCharge(listener)
